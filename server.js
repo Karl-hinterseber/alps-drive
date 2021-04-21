@@ -31,8 +31,22 @@ app.get('/api/drive/:name', function (req, res) {
             res.send(data);
           });
       }
+    })
+    .catch(() => {
+      res.status(404).send("le dossier n'existe pas!")
     });
 });
+
+app.post('/api/drive', function (req, res) {
+  if (drive.ifAlphanumerique(req.query.name)) {
+    drive.createFolder(req.query.name)
+    .then((result) => {
+      res.send(result);
+    })
+  } else {
+    res.status(404).send("erreur d'écriture!")
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

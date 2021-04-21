@@ -36,9 +36,20 @@ function folderOrFile (file) {
     return promiseDeux;
 }
 
+function createFolder (newfolder) {
+    const promiseNewFolder = fs.mkdir(tmp+'\\'+newfolder)
+    return promiseNewFolder;
+}
+
+function ifAlphanumerique (nameNewFolder) {
+    const test = /[a-zA-Z]/.test(nameNewFolder)
+    return test;
+}
 
 module.exports = {
     returnContent: returnContent,
     list: listfolder,
-    folderOrFile: folderOrFile
+    folderOrFile: folderOrFile,
+    createFolder: createFolder,
+    ifAlphanumerique: ifAlphanumerique
 }
