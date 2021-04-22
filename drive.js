@@ -41,8 +41,14 @@ function createFolder (newfolder) {
     return promiseNewFolder;
 }
 
+function createFolderInFolder (openFolder, newfolder) {
+    const promiseCreateFolderInFolder = fs.mkdir(tmp+'\\'+openFolder+'\\'+newfolder)
+    return promiseCreateFolderInFolder;
+}
+
+
 function ifAlphanumerique (nameNewFolder) {
-    const test = /[a-zA-Z]/.test(nameNewFolder)
+    const test = /^[a-zA-Z\s]+$/.test(nameNewFolder)
     return test;
 }
 
@@ -51,5 +57,6 @@ module.exports = {
     list: listfolder,
     folderOrFile: folderOrFile,
     createFolder: createFolder,
-    ifAlphanumerique: ifAlphanumerique
+    ifAlphanumerique: ifAlphanumerique,
+    createFolderInFolder: createFolderInFolder
 }

@@ -37,9 +37,22 @@ app.get('/api/drive/:name', function (req, res) {
     });
 });
 
+//Créer un dossier avec le nom {name}
 app.post('/api/drive', function (req, res) {
   if (drive.ifAlphanumerique(req.query.name)) {
     drive.createFolder(req.query.name)
+    .then((result) => {
+      res.send(result);
+    })
+  } else {
+    res.status(404).send("erreur d'écriture!")
+  }
+})
+
+//Créer un dossier avec le nom {name} dans {folder}
+app.post('/api/drive/:folder', function (req, res) {
+  if (drive.ifAlphanumerique(req.query.name)) {
+    drive.createFolderInFolder(req.params.folder, req.query.name)
     .then((result) => {
       res.send(result);
     })
