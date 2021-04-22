@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const { ifAlphanumerique } = require('./drive');
 const drive = require('./drive')
 const app = express()
 const port = 3000
@@ -73,6 +74,32 @@ app.delete('/api/drive/:name', function (req, res) {
             });
         } else {
           drive.deleteFile(req.params.name)
+            .then((stats) => {
+              res.send(stats);
+            });
+        }
+      })
+      .catch(() => {
+        res.status(404).send("dommage!")
+      });
+  } else {
+    res.status(400).send("alphanumerique n'est pas passé")
+  }
+});
+
+//Suppression d’un dossier ou d’un fichier avec le nom {name} dans {folder}
+app.delete('/api/drive/:folder/:name', function (req, res) {
+  console.log(req.params.name)
+  if (drive.ifAlphanumerique(req.params.name)) {
+    drive.folderOrFile(req.params.name, req.params.folder)
+      .then((stats) => {
+        if (stats.isDirectory()) {
+          drive.deleteFolderInFolder(req.params.folder, req.params.name)
+            .then((result) => {
+              res.send(result);
+            });
+        } else {
+          drive.deleteFileInFile(req.params.folder, req.params.name)
             .then((stats) => {
               res.send(stats);
             });
