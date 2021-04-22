@@ -48,8 +48,18 @@ function createFolderInFolder (openFolder, newfolder) {
 
 
 function ifAlphanumerique (nameNewFolder) {
-    const test = /^[a-zA-Z\s]+$/.test(nameNewFolder)
+    const test = /^[a-zA-Z\s\.]+$/.test(nameNewFolder)
     return test;
+}
+
+function deleteFile (file) {
+    const deletefile = fs.rm(tmp+'\\'+file)
+    return deletefile;
+}
+
+function deleteFolder (folder) {
+    const deletefolder = fs.rmdir(tmp+'\\'+folder)
+    return deletefolder;
 }
 
 module.exports = {
@@ -58,5 +68,7 @@ module.exports = {
     folderOrFile: folderOrFile,
     createFolder: createFolder,
     ifAlphanumerique: ifAlphanumerique,
-    createFolderInFolder: createFolderInFolder
+    createFolderInFolder: createFolderInFolder,
+    deleteFolder: deleteFolder,
+    deleteFile: deleteFile
 }

@@ -41,9 +41,9 @@ app.get('/api/drive/:name', function (req, res) {
 app.post('/api/drive', function (req, res) {
   if (drive.ifAlphanumerique(req.query.name)) {
     drive.createFolder(req.query.name)
-    .then((result) => {
-      res.send(result);
-    })
+      .then((result) => {
+        res.send(result);
+      })
   } else {
     res.status(404).send("erreur d'écriture!")
   }
@@ -53,13 +53,38 @@ app.post('/api/drive', function (req, res) {
 app.post('/api/drive/:folder', function (req, res) {
   if (drive.ifAlphanumerique(req.query.name)) {
     drive.createFolderInFolder(req.params.folder, req.query.name)
-    .then((result) => {
-      res.send(result);
-    })
+      .then((result) => {
+        res.send(result);
+      })
   } else {
     res.status(404).send("erreur d'écriture!")
   }
 })
+
+//Suppression d’un dossier ou d’un fichier avec le nom {name}
+app.delete('/api/drive/:name', function (req, res) {
+  if (drive.ifAlphanumerique(req.params.name)) {
+    drive.folderOrFile(req.params.name)
+      .then((stats) => {
+        if (stats.isDirectory()) {
+          drive.deleteFolder(req.params.name)
+            .then((result) => {
+              res.send(result);
+            });
+        } else {
+          drive.deleteFile(req.params.name)
+            .then((stats) => {
+              res.send(stats);
+            });
+        }
+      })
+      .catch(() => {
+        res.status(404).send("dommage!")
+      });
+  } else {
+    res.status(400).send("alphanumerique n'est pas passé")
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
